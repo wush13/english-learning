@@ -12,3 +12,12 @@ $RECYCLE.BIN/
 
 # Node.js
 node_modules/
+
+# 构建产物
+dist/
+
+# 编辑器/日志
+.idea/
+.vscode/
+*.log
+.pai/
