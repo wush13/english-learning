@@ -21,3 +21,4 @@ dist/
 .vscode/
 *.log
 .pai/
+.swc/
