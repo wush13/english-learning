@@ -1,0 +1,179 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  padding: $spacing-lg $page-padding 48rpx;
+  box-sizing: border-box;
+}
+
+.containerCorrect {
+  background: linear-gradient(180deg, #e8f9eb 0%, $color-bg-page 50%);
+}
+
+.containerWrong {
+  background: linear-gradient(180deg, #ffe6e6 0%, $color-bg-page 50%);
+}
+
+.header {
+  width: 100%;
+  max-width: $max-content-width;
+  margin: 0 auto $spacing-lg;
+  text-align: center;
+}
+
+.headerEmoji {
+  font-size: 88rpx;
+  line-height: 1;
+  display: block;
+  margin-bottom: $spacing-sm;
+}
+
+.headerTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.headerDesc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  display: block;
+}
+
+// 空状态
+.emptyState {
+  width: 100%;
+  max-width: $max-content-width;
+  margin: 80rpx auto 0;
+  padding: 80rpx $spacing-lg;
+  background: #fff;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.emptyEmoji {
+  font-size: 140rpx;
+  line-height: 1;
+  margin-bottom: $spacing-md;
+}
+
+.emptyText {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  text-align: center;
+  line-height: $line-height-normal;
+  margin-bottom: $spacing-lg;
+}
+
+.emptyBtn {
+  @include button-reset;
+  padding: 0 48rpx;
+  height: $button-height-md;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  border: none;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+// 单词列表
+.wordList {
+  width: 100%;
+  max-width: $max-content-width;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.wordCard {
+  width: 100%;
+  background: #fff;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  display: flex;
+  align-items: center;
+  box-shadow: $shadow-card;
+  transition: all $transition-base;
+  box-sizing: border-box;
+
+  &:active {
+    transform: scale(0.98);
+    opacity: 0.92;
+  }
+}
+
+.wordEmoji {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: $radius-md;
+  background: $color-bg-hover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: $spacing-md;
+  flex-shrink: 0;
+}
+
+.wordEmojiText {
+  font-size: 72rpx;
+  line-height: 1;
+}
+
+.wordInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.wordText {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  line-height: 1.2;
+  margin-bottom: 6rpx;
+  @include text-ellipsis;
+}
+
+.wordMeaning {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis;
+}
+
+.playIconBox {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: $radius-round;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: $spacing-sm;
+  flex-shrink: 0;
+}
+
+.playIconBoxCorrect {
+  background: rgba(76, 217, 100, 0.15);
+}
+
+.playIconBoxWrong {
+  background: rgba(255, 107, 107, 0.15);
+}
+
+.playIcon {
+  font-size: 36rpx;
+  line-height: 1;
+}

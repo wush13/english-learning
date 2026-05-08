@@ -1,0 +1,5 @@
+export default definePageConfig({
+  navigationBarTitleText: '英语小游戏',
+  navigationBarBackgroundColor: '#ff9eb5',
+  navigationBarTextStyle: 'white',
+});

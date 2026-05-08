@@ -1,0 +1,225 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  padding: $spacing-lg $page-padding 48rpx;
+  background: linear-gradient(180deg, #ffe6ee 0%, $color-bg-page 60%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+// 顶部进度条区域
+.progressBar {
+  width: 100%;
+  max-width: $max-content-width;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+}
+
+.progressText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.scoreBox {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  background: #fff;
+  border-radius: $radius-round;
+  padding: 8rpx 20rpx;
+  box-shadow: $shadow-card;
+}
+
+.scoreEmoji {
+  font-size: 28rpx;
+}
+
+.scoreText {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-primary-dark;
+}
+
+// 单词区域
+.wordSection {
+  width: 100%;
+  max-width: $max-content-width;
+  background: #fff;
+  border-radius: $radius-xl;
+  padding: 48rpx 32rpx;
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+}
+
+.word {
+  font-size: 72rpx;
+  font-weight: $font-weight-bold;
+  color: $color-primary-dark;
+  letter-spacing: 4rpx;
+  line-height: 1.2;
+  text-align: center;
+  margin-bottom: $spacing-md;
+}
+
+.pronounceBtn {
+  @include button-reset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  padding: 16rpx 40rpx;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  border: none;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  height: $button-height-md;
+  min-width: 200rpx;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.96);
+  }
+}
+
+.pronounceIcon {
+  font-size: 32rpx;
+}
+
+.pronounceText {
+  color: $color-text-white;
+}
+
+// 提示文字
+.tipText {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-lg;
+  font-weight: $font-weight-medium;
+}
+
+// 图片选择区
+.imgContainer {
+  width: 100%;
+  max-width: $max-content-width;
+  display: flex;
+  justify-content: space-between;
+  gap: $spacing-md;
+}
+
+.imgBox {
+  flex: 1;
+  aspect-ratio: 1 / 1;
+  background: #fff;
+  border: 6rpx solid transparent;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  box-shadow: $shadow-card;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-base;
+  position: relative;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.imgBoxCorrect {
+  border-color: $color-correct;
+  box-shadow: 0 0 20rpx rgba(76, 217, 100, 0.5);
+}
+
+.imgBoxWrong {
+  border-color: $color-wrong;
+  box-shadow: 0 0 20rpx rgba(255, 107, 107, 0.5);
+}
+
+.imgEmoji {
+  font-size: 160rpx;
+  line-height: 1;
+}
+
+// 反馈弹层
+.feedbackMask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.feedbackCard {
+  width: 560rpx;
+  background: #fff;
+  border-radius: $radius-xl;
+  padding: 48rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: $shadow-popup;
+}
+
+.feedbackEmoji {
+  font-size: 180rpx;
+  line-height: 1;
+  margin-bottom: $spacing-md;
+}
+
+.feedbackTitle {
+  font-size: $font-size-xxl;
+  font-weight: $font-weight-bold;
+  margin-bottom: $spacing-sm;
+  line-height: 1.3;
+}
+
+.feedbackTitleCorrect {
+  color: $color-correct;
+}
+
+.feedbackTitleWrong {
+  color: $color-wrong;
+}
+
+.feedbackDesc {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-xl;
+  text-align: center;
+  line-height: $line-height-normal;
+}
+
+.nextBtn {
+  @include button-reset;
+  width: 100%;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  border: none;
+  border-radius: $radius-button;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
