@@ -42,6 +42,63 @@
   display: block;
 }
 
+// 分类筛选条
+.categoryBar {
+  width: 100%;
+  max-width: $max-content-width;
+  margin: 0 auto $spacing-sm;
+  white-space: nowrap;
+}
+
+.categoryBarInner {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: $spacing-xs;
+  padding: 4rpx 4rpx 8rpx;
+}
+
+.categoryPill {
+  flex-shrink: 0;
+  padding: 12rpx 24rpx;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 999rpx;
+  border: 2rpx solid rgba(0, 0, 0, 0.06);
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.categoryPillActive {
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  border-color: transparent;
+
+  .categoryPillText {
+    color: $color-text-white;
+    font-weight: $font-weight-bold;
+  }
+}
+
+.categoryPillText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.2;
+}
+
+// 当前筛选提示
+.filterHint {
+  width: 100%;
+  max-width: $max-content-width;
+  margin: 0 auto $spacing-sm;
+  padding: 0 $spacing-xs;
+}
+
+.filterHintText {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
 // 空状态
 .emptyState {
   width: 100%;

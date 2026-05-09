@@ -45,10 +45,12 @@ const GamePage: React.FC = () => {
   const [correctCount, setCorrectCount] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
 
-  // 发音：播放单词对应的本地 mp3 音频
-  // 音频位于 src/assets/audio/，构建时会被 copy 到 dist/assets/audio/
-  // InnerAudioContext 通过相对路径（如 /assets/audio/001_apple.mp3）即可播放
+  // 发音：播放单词对应的云存储音频
+  // 音频以 cloud:// fileID 的形式存放在 word.audio 中
+  // speak 时通过 Taro.cloud.getTempFileURL 换取临时 https 地址再交给 InnerAudioContext 播放
   const audioCtxRef = useRef<Taro.InnerAudioContext | null>(null);
+  /** fileID -> 临时 https 地址的缓存（同一会话内复用，减少 getTempFileURL 调用次数） */
+  const tempUrlCacheRef = useRef<Map<string, string>>(new Map());
 
   // 组件卸载时销毁 audio 上下文，防止内存泄漏
   useEffect(() => {
@@ -64,33 +66,67 @@ const GamePage: React.FC = () => {
     };
   }, []);
 
-  const speak = useCallback((word: Word) => {
-    console.log('[Game] speak:', word.word, word.audio);
-    try {
-      // 每次播放前销毁旧实例（避免同时播放多个音频）
-      if (audioCtxRef.current) {
-        try {
-          audioCtxRef.current.stop();
-          audioCtxRef.current.destroy();
-        } catch (err) {
-          console.error('[Game] recycle audio error:', err);
-        }
+  /** 把 cloud:// fileID 换成可播放的临时 https 地址（带缓存） */
+  const resolveAudioUrl = useCallback(async (fileID: string): Promise<string> => {
+    // 非云路径（如 https / 本地路径）直接返回
+    if (!fileID.startsWith('cloud://')) return fileID;
+    const cached = tempUrlCacheRef.current.get(fileID);
+    if (cached) return cached;
+    // @ts-ignore Taro.cloud 在 weapp 下可用
+    if (!Taro.cloud || typeof Taro.cloud.getTempFileURL !== 'function') {
+      throw new Error('Taro.cloud unavailable');
+    }
+    // @ts-ignore
+    const res = await Taro.cloud.getTempFileURL({ fileList: [fileID] });
+    const item = res?.fileList?.[0];
+    if (!item || item.status !== 0 || !item.tempFileURL) {
+      throw new Error(`getTempFileURL failed: ${item?.errMsg || 'unknown'}`);
+    }
+    tempUrlCacheRef.current.set(fileID, item.tempFileURL);
+    return item.tempFileURL;
+  }, []);
+
+  /** 真正用 InnerAudioContext 播放一个 https 音频地址 */
+  const playUrl = useCallback((word: Word, url: string) => {
+    // 每次播放前销毁旧实例（避免同时播放多个音频）
+    if (audioCtxRef.current) {
+      try {
+        audioCtxRef.current.stop();
+        audioCtxRef.current.destroy();
+      } catch (err) {
+        console.error('[Game] recycle audio error:', err);
       }
-      const audio = Taro.createInnerAudioContext();
-      audio.src = word.audio;
-      audio.onError((err) => {
-        console.error('[Game] audio onError:', word.audio, err);
-        // 音频播放失败时用 Toast + 震动作为兜底提示
+    }
+    const audio = Taro.createInnerAudioContext();
+    audio.src = url;
+    audio.onError((err) => {
+      console.warn('[Game] audio onError:', url, err);
+      Taro.showToast({ title: `🔊 ${word.word}`, icon: 'none', duration: 800 });
+      Taro.vibrateShort({ type: 'light' }).catch(() => {});
+    });
+    audio.play();
+    audioCtxRef.current = audio;
+  }, []);
+
+  const speak = useCallback(
+    (word: Word) => {
+      console.log('[Game] speak:', word.word, word.audio || '(no audio)');
+      // 未配音的单词直接走 Toast + 震动兜底，避免无意义的网络请求
+      if (!word.hasAudio || !word.audio) {
         Taro.showToast({ title: `🔊 ${word.word}`, icon: 'none', duration: 800 });
         Taro.vibrateShort({ type: 'light' }).catch(() => {});
-      });
-      audio.play();
-      audioCtxRef.current = audio;
-    } catch (err) {
-      console.error('[Game] speak exception:', err);
-      Taro.showToast({ title: `🔊 ${word.word}`, icon: 'none', duration: 800 });
-    }
-  }, []);
+        return;
+      }
+      resolveAudioUrl(word.audio)
+        .then((url) => playUrl(word, url))
+        .catch((err) => {
+          console.warn('[Game] resolveAudioUrl error:', word.audio, err);
+          Taro.showToast({ title: `🔊 ${word.word}`, icon: 'none', duration: 800 });
+          Taro.vibrateShort({ type: 'light' }).catch(() => {});
+        });
+    },
+    [resolveAudioUrl, playUrl]
+  );
 
   // 自动发音
   useEffect(() => {

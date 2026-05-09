@@ -1,8 +1,10 @@
 {
   "miniprogramRoot": "dist/",
+  "cloudfunctionRoot": "cloudfunctions/",
   "projectname": "taro_template",
   "description": "taro_template",
   "appid": "wx57e53da69fca3acf",
+  "cloud": true,
   "setting": {
     "urlCheck": true,
     "es6": false,

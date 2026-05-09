@@ -19,13 +19,7 @@ export default defineConfig<'webpack5'>(async (merge, { command, mode }) => {
     outputRoot: process.env.TARO_OUTPUT_DIR || 'dist',
     plugins: ['@tarojs/plugin-html'],
     defineConstants: {},
-    copy: {
-      patterns: [
-        // 将音频文件夹原样拷贝到 dist，方便 InnerAudioContext 通过相对路径播放
-        { from: 'src/assets/audio/', to: 'dist/assets/audio/' },
-      ],
-      options: {},
-    },
+    // 音频已转存到微信云存储，无需再把本地 mp3 拷贝进 dist
     framework: 'react',
     compiler: {
       type: 'webpack5',
